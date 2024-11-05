@@ -1,105 +1,26 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import React from 'react';
+import {User, Users, ArrowLeft, DoorOpen, DoorClosed, UserCheck} from 'lucide-react';
 import { Button } from "@/Components/ui/button";
-import { Head } from '@inertiajs/react';
-import { Cloud, CreditCard, Keyboard, LifeBuoy, LogOut, Mail, MessageSquare, Plus, PlusCircle, Settings, User, UserPlus, Users} from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger} from "@/Components/ui/dropdown-menu";
+import {Link} from "@inertiajs/react";
+import MainLayout from "@/Layouts/MainLayout.jsx";
+import TactileButton from "@/Components/TactileButton.jsx";
 
-export default function Dashboard({ auth }) {
+const Home = () => {
     return (
-        <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>} >
-            <Head title="Dashboard" />
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in!</div>
-                        <Button>Click me</Button>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline">Open</Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-56">
-                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuGroup>
-                                    <DropdownMenuItem>
-                                        <User className="mr-2 h-4 w-4" />
-                                        <span>Profile</span>
-                                        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <CreditCard className="mr-2 h-4 w-4" />
-                                        <span>Billing</span>
-                                        <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <Settings className="mr-2 h-4 w-4" />
-                                        <span>Settings</span>
-                                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <Keyboard className="mr-2 h-4 w-4" />
-                                        <span>Keyboard shortcuts</span>
-                                        <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-                                    </DropdownMenuItem>
-                                </DropdownMenuGroup>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuGroup>
-                                    <DropdownMenuItem>
-                                        <Users className="mr-2 h-4 w-4" />
-                                        <span>Team</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSub>
-                                        <DropdownMenuSubTrigger>
-                                            <UserPlus className="mr-2 h-4 w-4" />
-                                            <span>Invite users</span>
-                                        </DropdownMenuSubTrigger>
-                                        <DropdownMenuPortal>
-                                            <DropdownMenuSubContent>
-                                                <DropdownMenuItem>
-                                                    <Mail className="mr-2 h-4 w-4" />
-                                                    <span>Email</span>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem>
-                                                    <MessageSquare className="mr-2 h-4 w-4" />
-                                                    <span>Message</span>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuSeparator />
-                                                <DropdownMenuItem>
-                                                    <PlusCircle className="mr-2 h-4 w-4" />
-                                                    <span>More...</span>
-                                                </DropdownMenuItem>
-                                            </DropdownMenuSubContent>
-                                        </DropdownMenuPortal>
-                                    </DropdownMenuSub>
-                                    <DropdownMenuItem>
-                                        <Plus className="mr-2 h-4 w-4" />
-                                        <span>New Team</span>
-                                        <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-                                    </DropdownMenuItem>
-                                </DropdownMenuGroup>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>
-                                    <span>GitHub</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <LifeBuoy className="mr-4 h-4 w-4" />
-                                    <span>Support</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem disabled>
-                                    <Cloud className="mr-2 h-4 w-4" />
-                                    <span>API</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>
-                                    <LogOut className="mr-2 h-4 w-4" />
-                                    <span>Log out</span>
-                                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </div>
-                </div>
+        <MainLayout
+            title="Bienvenue chez Docaposte"
+            subtitle="Veuillez enregistrer votre entrée dans notre registre, ou nous informer de votre départ"
+        >
+            <div className="flex justify-center space-x-6 my-16">
+                {[
+                    { title: "Entrée", subtitle: "Enregistrez votre visite dans notre registre visiteurs", Icon: DoorOpen, href: route('entry.index') },
+                    { title: "Sortie", subtitle: "Renseignez votre sortie signant la fin de votre visite", Icon: DoorClosed }
+                ].map((item, index) => (
+                    <TactileButton key={index} {...item}/>
+                ))}
             </div>
-        </AuthenticatedLayout>
+        </MainLayout>
     );
-}
+};
+
+export default Home;
