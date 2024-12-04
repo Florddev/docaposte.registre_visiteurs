@@ -1,33 +1,46 @@
 import React, {useState} from 'react';
-import {User, Users, ArrowLeft, DoorOpen, DoorClosed, UserCheck} from 'lucide-react';
-import { Button } from "@/Components/ui/button";
-import {Link} from "@inertiajs/react";
+import {Sparkles, DoorOpen} from 'lucide-react';
 import MainLayout from "@/Layouts/MainLayout";
 import PersonToMeet from "@/Pages/Entry/PersonToMeet.jsx";
+import Matricule from "@/Pages/Entry/Matricule.jsx";
+import Identity from "@/Pages/Entry/Identity.jsx";
+import PersonalData from "@/Pages/Entry/PersonalData.jsx";
+import End from "@/Pages/Entry/End.jsx";
+import EntryTypes from "@/Enums/EntryTypes";
 
 const STEPS = [
     {
         Component: PersonToMeet,
         props: {
-            title: "Dites nous qui vous êtes",
             subtitle: "Veuillez renseigner la personne que vous souhaitez rencontrer"
         }
     },
     {
-        Component: PersonToMeet,
+        Component: Matricule,
         props: {
-            title: "Test2",
-            subtitle: "hey"
+            subtitle: "Veuillez renseigner votre numéro de matricule"
         }
     },
+    {
+        Component: Identity,
+        props: {
+            subtitle: "Veuillez renseigner vos informations personnelles"
+        }
+    },
+    {
+        Component: PersonalData,
+        props: {
+            title: "Données personnelles",
+            subtitle: "Informations sur la conservation et le traitement"
+        }
+    }
 ];
 
-const Employee = () => {
+const Employee = ({ motifs }) => {
     const [step, setStep] = useState(0);
     const [formData, setFormData] = useState({});
 
     const { Component, props } = STEPS[step] || STEPS[0];
-
 
     const handleNext = (stepData) => {
         setFormData(prev => ({
@@ -41,18 +54,18 @@ const Employee = () => {
         setStep(prev => prev - 1);
     };
 
-
     const commonProps = {
         nextStep: handleNext,
         backStep: handleBack,
         formData, // Données globales du formulaire
         currentStep: step,
-        totalSteps: Object.keys(STEPS).length
+        totalSteps: Object.keys(STEPS).length,
+        entryType: EntryTypes.Employee
     };
 
     return (
-        <MainLayout {...props} sectionName="Entrée" SectionIcon={DoorOpen}>
-            <Component {...commonProps} {...props} />
+        <MainLayout sectionName="Entrée" SectionIcon={DoorOpen} title="Salarié Docaposte" {...props}>
+            <Component motifs={motifs} {...commonProps} {...props} />
         </MainLayout>
     );
 };
