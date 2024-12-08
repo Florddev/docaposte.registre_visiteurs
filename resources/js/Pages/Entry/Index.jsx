@@ -24,7 +24,7 @@ const EntryPage = () => {
             <div className="flex justify-start w-full">
                 <Button variant="outline" asChild>
                     <Link href={route('home')}>
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Retour
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Accueil
                     </Link>
                 </Button>
             </div>

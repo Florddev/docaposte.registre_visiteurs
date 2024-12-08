@@ -14,7 +14,7 @@ const Home = () => {
             <div className="flex justify-center space-x-6 my-16">
                 {[
                     { title: "Entrée", subtitle: "Enregistrez votre visite dans notre registre visiteurs", Icon: DoorOpen, href: route('entry.index') },
-                    { title: "Exit", subtitle: "Renseignez votre sortie signant la fin de votre visite", Icon: DoorClosed, href: route('exit.index') }
+                    { title: "Sortie", subtitle: "Renseignez votre sortie signant la fin de votre visite", Icon: DoorClosed, href: route('exit.index') }
                 ].map((item, index) => (
                     <TactileButton key={index} {...item}/>
                 ))}

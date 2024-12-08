@@ -33,7 +33,6 @@ const PersonalData = ({
             dataRetention: consents.dataRetention
         };
 
-        console.log(finalData);
         router.post(route('entry.submitVisit'), finalData);
     };
 
