@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { User, ArrowLeft, ArrowRight, Phone } from 'lucide-react';
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent } from "@/Components/ui/card";
@@ -32,6 +32,32 @@ const Identity = ({
         }
     };
 
+    const [isLoading, setIsLoading] = useState(false);
+    useEffect(() => {
+        const fetchVisitor = async () => {
+            if (formData.matricule) {
+                setIsLoading(true);
+                try {
+                    const response = await axios.get(`/api/entry/visitors/employee/${formData.matricule}`);
+                    if (response.data) {
+                        setData({
+                            lastName: response.data.lastname,
+                            firstName: response.data.firstname,
+                            phone: response.data.phone,
+                            email: response.data.email
+                        });
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de la récupération du visiteur:', error);
+                } finally {
+                    setIsLoading(false);
+                }
+            }
+        };
+
+        fetchVisitor();
+    }, [formData.matricule]);
+
     return (
         <>
             <div className="flex justify-center space-x-6 my-16 w-[900px]">
@@ -45,13 +71,16 @@ const Identity = ({
                                     Renseignez vos identité pour que l'on puisse vous reconnaitre.
                                 </p>
 
+                                {/*{isLoading && <div className="text-sm text-muted-foreground p-4 bg-blue-200 rounded my-2">Chargement des données...</div>}*/}
+
                                 <div className="pt-6 flex w-full gap-4">
                                     <div className="w-full flex flex-col space-y-1.5">
                                         <Label htmlFor="lastName">Nom</Label>
                                         <Input
                                             value={data.lastName}
                                             onChange={handleChange('lastName')}
-                                            placeholder="Nom de famille"
+                                            placeholder={isLoading ? "Chargement..." : "Nom de famille"}
+                                            disabled={isLoading}
                                         />
                                     </div>
                                     <div className="w-full flex flex-col space-y-1.5">
@@ -59,7 +88,8 @@ const Identity = ({
                                         <Input
                                             value={data.firstName}
                                             onChange={handleChange('firstName')}
-                                            placeholder="Prénom"
+                                            placeholder={isLoading ? "Chargement..." : "Prénom"}
+                                            disabled={isLoading}
                                         />
                                     </div>
                                 </div>
@@ -69,7 +99,8 @@ const Identity = ({
                                         <Input
                                             value={data.phone}
                                             onChange={handleChange('phone')}
-                                            placeholder="Numéro de téléphone"
+                                            placeholder={isLoading ? "Chargement..." : "Numéro de téléphone"}
+                                            disabled={isLoading}
                                         />
                                     </div>
                                     <div className="w-full flex flex-col space-y-1.5">
@@ -78,7 +109,8 @@ const Identity = ({
                                             type="email"
                                             value={data.email}
                                             onChange={handleChange('email')}
-                                            placeholder="Adresse email"
+                                            placeholder={isLoading ? "Chargement..." : "Adresse email"}
+                                            disabled={isLoading}
                                         />
                                     </div>
                                 </div>

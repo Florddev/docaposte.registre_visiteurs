@@ -38,19 +38,20 @@ class ExitController
             ->get();
 
         if($visits->count() > 1 && empty($request->lastname)){
-            dd('Plusieurs entrée: Demander le nom de famille');
+            return redirect()->back()->withErrors([
+                'exitCode' => 'Plusieurs entrées ont été trouvées pour ce code, merci de contacter un administrateur.'
+            ])->with('error', true);
         } else if($visits->count() == 1) {
             $visit = $visits->first();
-
             $visit->date_sortie = now();
             $visit->save();
-
             return redirect()->route('exit.success');
         }
 
-        // Si aucune visite trouvé
-        dd('Aucune entrée: Afficher une erreur');
-        return redirect()->route('exit.success');
+        // Si aucune visite trouvée
+        return redirect()->back()->withErrors([
+            'exitCode' => 'Aucune entrée n\'a été trouvée pour ce code.'
+        ])->with('error', true);
     }
 
 }

@@ -1,9 +1,4 @@
 import { useEffect } from 'react';
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 import { Button } from "@/Components/ui/button"
@@ -149,7 +144,7 @@ export default function Register() {
                                         placeholder="Max"
                                         required
                                     />
-                                    <InputError message={errors.name} className="mt-2" />
+                                    <p className="mt-2">{errors.name}</p>
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="last-name">Tag</Label>
@@ -169,7 +164,7 @@ export default function Register() {
                                     onChange={(e) => setData('email', e.target.value)}
                                     required
                                 />
-                                <InputError message={errors.email} className="mt-2" />
+                                <p className="mt-2">{errors.email}</p>
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>
@@ -183,7 +178,7 @@ export default function Register() {
                                     onChange={(e) => setData('password', e.target.value)}
                                     required
                                 />
-                                <InputError message={errors.password} className="mt-2" />
+                                <p className="mt-2">{errors.password}</p>
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Confirm Password</Label>
@@ -197,7 +192,7 @@ export default function Register() {
                                     onChange={(e) => setData('password_confirmation', e.target.value)}
                                     required
                                 />
-                                <InputError message={errors.password_confirmation} className="mt-2" />
+                                <p className="mt-2">{errors.password_confirmation}</p>
                             </div>
                             <Button type="submit" className="w-full" disabled={processing}>
                                 Create an account

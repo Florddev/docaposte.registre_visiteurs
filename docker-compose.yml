@@ -25,6 +25,23 @@ services:
             - mysql
             - redis
             - mailpit
+
+    scheduler:
+        build:
+            context: .
+            dockerfile: scheduler.dockerfile
+        volumes:
+            - '.:/var/www/html'
+            - '/etc/timezone:/etc/timezone:ro'
+            - '/etc/localtime:/etc/localtime:ro'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            WWWGROUP: '${WWWGROUP}'
+        networks:
+            - sail
+        depends_on:
+            - laravel.test
+
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:

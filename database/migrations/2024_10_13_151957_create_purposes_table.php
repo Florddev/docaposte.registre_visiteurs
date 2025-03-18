@@ -23,7 +23,7 @@ return new class extends Migration
 
             $communData = ['created_at' => now(), 'updated_at' => now()];
             DB::table(self::TABLE_NAME)->insert([
-                ['nom' => 'Visit', ...$communData],
+                ['nom' => 'Visite', ...$communData],
                 ['nom' => 'Audit', ...$communData],
                 ['nom' => 'Entretien', ...$communData],
                 ['nom' => 'Réunion', ...$communData],

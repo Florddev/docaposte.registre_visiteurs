@@ -16,7 +16,7 @@ const EntryPage = () => {
             <div className="flex justify-center space-x-6 my-16">
                 {[
                     { title: "Salarié Docaposte", subtitle: "Vous êtes un salarié de Docaposte tout site confondu", Icon: UserCheck, href: route('entry.employee') },
-                    { title: "Visitor extérieur", subtitle: "Vous êtes un visiteur extérieur à l'entreprise", Icon: User, href: route('entry.visitor') }
+                    { title: "Visiteur extérieur", subtitle: "Vous êtes un visiteur extérieur à l'entreprise", Icon: User, href: route('entry.visitor') }
                 ].map((item, index) => (
                     <TactileButton key={index} {...item}/>
                 ))}

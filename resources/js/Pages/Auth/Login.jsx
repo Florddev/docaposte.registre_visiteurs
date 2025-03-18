@@ -1,10 +1,6 @@
 import { useEffect } from 'react';
-import Checkbox from '@/Components/Checkbox';
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
+import { Checkbox } from '@/Components/ui/checkbox';
+//import InputError from '@/Components/InputError';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Loader2 } from "lucide-react";
 
@@ -126,7 +122,8 @@ export default function Login({ status, canResetPassword }) {
                                     isFocused={true}
                                     onChange={(e) => setData('email', e.target.value)}
                                 />
-                                <InputError message={errors.email} />
+                                {/*<InputError message={errors.email} />*/}
+                                <p>{ errors.email }</p>
                             </div>
 
                             <div className="grid gap-2">
@@ -147,7 +144,8 @@ export default function Login({ status, canResetPassword }) {
                                     autoComplete="current-password"
                                     onChange={(e) => setData('password', e.target.value)}
                                 />
-                                <InputError message={errors.password} />
+                                {/*<InputError message={errors.password} />*/}
+                                <p>{ errors.password }</p>
                             </div>
 
                             <div className="block">

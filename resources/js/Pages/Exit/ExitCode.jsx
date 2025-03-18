@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { ArrowLeft, ArrowRight, Lock } from 'lucide-react';
 import { Button } from "@/Components/ui/button";
-import {Link, router} from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import { Card, CardContent } from "@/Components/ui/card";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/Components/ui/input-otp";
-import EntryTypes from "@/Enums/EntryTypes";
+import { Alert, AlertDescription } from "@/Components/ui/alert";
 
 const ExitCode = ({
-   nextStep,
-   backStep,
-   formData,
-   currentStep,
-   totalSteps,
-   entryType,
+  nextStep,
+  backStep,
+  formData,
+  currentStep,
+  totalSteps,
+  entryType,
 }) => {
+    const { errors } = usePage().props;
     const [value, setValue] = useState(formData.exitCode || '');
+
     const handleComplete = (value) => {
         if (value.length === 8) {
             nextStep({ exitCode: value });
@@ -27,7 +29,6 @@ const ExitCode = ({
             exitCode: value
         };
 
-        // console.log(finalData);
         router.post(route('exit.submitExit'), finalData);
     };
 
@@ -59,6 +60,14 @@ const ExitCode = ({
                                             </InputOTPGroup>
                                         ))}
                                     </InputOTP>
+
+                                    {errors?.exitCode && (
+                                        <Alert variant="destructive" className="mt-4">
+                                            <AlertDescription>
+                                                {errors.exitCode}
+                                            </AlertDescription>
+                                        </Alert>
+                                    )}
                                 </div>
                             </div>
                         </div>
