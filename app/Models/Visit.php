@@ -25,4 +25,9 @@ class Visit extends Model
     {
         return $this->belongsTo(Visitor::class, 'visitor_id');
     }
+
+    public function purpose(): BelongsTo
+    {
+        return $this->belongsTo(Purpose::class, 'motif_id');
+    }
 }

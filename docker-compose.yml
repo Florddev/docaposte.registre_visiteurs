@@ -25,7 +25,6 @@ services:
             - mysql
             - redis
             - mailpit
-
     scheduler:
         build:
             context: .
@@ -41,7 +40,6 @@ services:
             - sail
         depends_on:
             - laravel.test
-
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:

@@ -26,7 +26,7 @@ use Inertia\Inertia;
 //});
 
 //Route::get('/home', function () {
-//    return Inertia::render('Home');
+//    return Inertia::render('MainController');
 //})->middleware(['auth', 'verified'])->name('home');
 //
 //Route::get('/dashboard', function () {
