@@ -4,13 +4,14 @@ import { Link } from '@inertiajs/react'
 import {
     Bell,
     CircleUser,
-    Home, Icon,
+    Home,
     LineChart,
     Menu,
     Package,
     Search,
     ShoppingCart,
     Users,
+    Tag
 } from "lucide-react"
 
 import { Button } from "@/Components/ui/button"
@@ -35,7 +36,7 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import {cn} from "@/lib/utils";
 
 function LinkComponent({ text = '', Icon = null, ...props}) {
-    const isActive = props.href === window.location.href;
+    const isActive = window.location.href.startsWith(props.href);
 
     return(
         <Link className={cn(
@@ -74,9 +75,9 @@ const MainLayout = ({ title, subtitle, children, sectionName, SectionIcon, ...pr
                             <nav className="grid gap-0.5 items-start px-2 text-sm font-medium lg:px-4">
                                 <LinkComponent href={route('admin.home')} text="Accueil" Icon={Home} />
                                 <LinkComponent href={route('admin.visits.index')} text="Visites" Icon={ShoppingCart} />
-                                <LinkComponent href={route('home')} text="Utilisateurs" Icon={Users} />
-                                <LinkComponent href={route('home')} text="Motifs de visite" Icon={Package} />
-                                <LinkComponent href={route('home')} text="Statistiques" Icon={LineChart} />
+                                <LinkComponent href={route('admin.purposes.index')} text="Motifs de visite" Icon={Tag} />
+                                <LinkComponent href={route('admin.users.index')} text="Utilisateurs" Icon={Users} />
+                                <LinkComponent href={"#"} text="Statistiques" Icon={LineChart} />
                             </nav>
                         </div>
                     </div>
@@ -96,11 +97,11 @@ const MainLayout = ({ title, subtitle, children, sectionName, SectionIcon, ...pr
                             </SheetTrigger>
                             <SheetContent side="left" className="flex flex-col">
                                 <nav className="grid gap-2 text-lg font-medium">
-                                    <LinkComponent href="#" text="Accueil" Icon={Home} isActive={true} />
-                                    <LinkComponent href="#" text="Visites" Icon={ShoppingCart} />
-                                    <LinkComponent href="#" text="Utilisateurs" Icon={Users} />
-                                    <LinkComponent href="#" text="Motifs de visite" Icon={Package} />
-                                    <LinkComponent href="#" text="Statistiques" Icon={LineChart} />
+                                    <LinkComponent href={route('admin.home')} text="Accueil" Icon={Home} />
+                                    <LinkComponent href={route('admin.visits.index')} text="Visites" Icon={ShoppingCart} />
+                                    <LinkComponent href={route('admin.purposes.index')} text="Motifs de visite" Icon={Tag} />
+                                    <LinkComponent href={route('admin.users.index')} text="Utilisateurs" Icon={Users} />
+                                    <LinkComponent href={"#"} text="Statistiques" Icon={LineChart} />
                                 </nav>
                             </SheetContent>
                         </Sheet>
@@ -110,7 +111,7 @@ const MainLayout = ({ title, subtitle, children, sectionName, SectionIcon, ...pr
                                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                                     <Input
                                         type="search"
-                                        placeholder="Search products..."
+                                        placeholder="Rechercher..."
                                         className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
                                     />
                                 </div>
@@ -125,13 +126,13 @@ const MainLayout = ({ title, subtitle, children, sectionName, SectionIcon, ...pr
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem asChild>
                                     <Link href={route('profile.edit')} className="w-full">Profil</Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
-                                    <Link href={route('logout')} className="w-full" method="post" as="button">Logout</Link>
+                                    <Link href={route('logout')} className="w-full" method="post" as="button">Déconnexion</Link>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

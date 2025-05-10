@@ -14,6 +14,21 @@ class Purpose extends Model
         'nom'
     ];
 
+    /**
+     * Accesseur pour obtenir le nom du motif
+     *
+     * @return string
+     */
+    public function getNameAttribute(): string
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Relation avec les visites
+     *
+     * @return HasMany
+     */
     public function visits(): HasMany
     {
         return $this->hasMany(Visit::class, 'motif_id');

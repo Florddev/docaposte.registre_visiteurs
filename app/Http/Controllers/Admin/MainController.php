@@ -17,12 +17,4 @@ class MainController extends Controller
     {
         return Inertia::render('Admin/Home');
     }
-
-    /*
-    #[Get('visits', 'dashboard.visits')]
-    public function visits(): \Inertia\Response
-    {
-        return Inertia::render('Admin/Index');
-    }
-    */
 }
