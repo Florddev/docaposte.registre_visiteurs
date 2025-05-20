@@ -15,16 +15,6 @@ class Purpose extends Model
     ];
 
     /**
-     * Accesseur pour obtenir le nom du motif
-     *
-     * @return string
-     */
-    public function getNameAttribute(): string
-    {
-        return $this->nom;
-    }
-
-    /**
      * Relation avec les visites
      *
      * @return HasMany
