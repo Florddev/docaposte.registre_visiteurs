@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react'
 import {
     Bell,
     CircleUser,
-    Home,
+    Home, Icon,
     LineChart,
     Menu,
     Package,
@@ -31,16 +31,31 @@ import {
 } from "@/Components/ui/dropdown-menu"
 import { Input } from "@/Components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/Components/ui/sheet"
+import ApplicationLogo from "@/Components/ApplicationLogo";
+import {cn} from "@/lib/utils";
+
+function LinkComponent({ text = '', isActive = false, Icon = null, ...props}) {
+    return(
+        <Link className={cn(
+            "flex items-center gap-3 rounded-lg px-3 py-2 transition-all text-muted-foreground hover:bg-muted hover:text-foreground/70",
+            isActive && "!bg-primary/5 !text-primary"
+        )} {...props}>
+            {Icon && <Icon className="h-4 w-4" />}
+            { text }
+        </Link>
+    );
+}
 
 export default function Dashboard({ auth }) {
+
     return (
         <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
             <div className="hidden border-r bg-muted/40 md:block">
                 <div className="flex h-full max-h-screen flex-col gap-2">
                     <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
                         <Link href="/" className="flex items-center gap-2 font-semibold">
-                            <Package2 className="h-6 w-6" />
-                            <span className="">OnlyFun</span>
+                            <ApplicationLogo className="h-6 w-6 fill-primary" />
+                            <span className="">Docaposte</span>
                         </Link>
                         <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
                             <Bell className="h-4 w-4" />
@@ -48,45 +63,12 @@ export default function Dashboard({ auth }) {
                         </Button>
                     </div>
                     <div className="flex-1">
-                        <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-                            <Link
-                                href="#"
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                            >
-                                <Home className="h-4 w-4" />
-                                Dashboard
-                            </Link>
-                            <Link
-                                href="#"
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                            >
-                                <ShoppingCart className="h-4 w-4" />
-                                Orders
-                                <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                                    6
-                                </Badge>
-                            </Link>
-                            <Link
-                                href="#"
-                                className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
-                            >
-                                <Package className="h-4 w-4" />
-                                Products{" "}
-                            </Link>
-                            <Link
-                                href="#"
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                            >
-                                <Users className="h-4 w-4" />
-                                Customers
-                            </Link>
-                            <Link
-                                href="#"
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                            >
-                                <LineChart className="h-4 w-4" />
-                                Analytics
-                            </Link>
+                        <nav className="grid gap-0.5 items-start px-2 text-sm font-medium lg:px-4">
+                            <LinkComponent href="#" text="Accueil" Icon={Home} isActive={true} />
+                            <LinkComponent href="#" text="Visites" Icon={ShoppingCart} />
+                            <LinkComponent href="#" text="Utilisateurs" Icon={Users} />
+                            <LinkComponent href="#" text="Motifs de visite" Icon={Package} />
+                            <LinkComponent href="#" text="Statistiques" Icon={LineChart} />
                         </nav>
                     </div>
                     <div className="mt-auto p-4">
@@ -122,51 +104,11 @@ export default function Dashboard({ auth }) {
                         </SheetTrigger>
                         <SheetContent side="left" className="flex flex-col">
                             <nav className="grid gap-2 text-lg font-medium">
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-2 text-lg font-semibold"
-                                >
-                                    <Package2 className="h-6 w-6" />
-                                    <span className="sr-only">Acme Inc</span>
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                                >
-                                    <Home className="h-5 w-5" />
-                                    Dashboard
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
-                                >
-                                    <ShoppingCart className="h-5 w-5" />
-                                    Orders
-                                    <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                                        6
-                                    </Badge>
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                                >
-                                    <Package className="h-5 w-5" />
-                                    Products
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                                >
-                                    <Users className="h-5 w-5" />
-                                    Customers
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                                >
-                                    <LineChart className="h-5 w-5" />
-                                    Analytics
-                                </Link>
+                                <LinkComponent href="#" text="Accueil" Icon={Home} isActive={true} />
+                                <LinkComponent href="#" text="Visites" Icon={ShoppingCart} />
+                                <LinkComponent href="#" text="Utilisateurs" Icon={Users} />
+                                <LinkComponent href="#" text="Motifs de visite" Icon={Package} />
+                                <LinkComponent href="#" text="Statistiques" Icon={LineChart} />
                             </nav>
                             <div className="mt-auto">
                                 <Card>
@@ -220,7 +162,7 @@ export default function Dashboard({ auth }) {
                 </header>
                 <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
                     <div className="flex items-center">
-                        <h1 className="text-lg font-semibold md:text-2xl">Inventory</h1>
+                        <h1 className="text-lg font-semibold md:text-2xl">Dashboard</h1>
                     </div>
                     <div
                         className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm" x-chunk="dashboard-02-chunk-1"
