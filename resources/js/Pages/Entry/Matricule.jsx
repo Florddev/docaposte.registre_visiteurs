@@ -41,6 +41,7 @@ const Matricule = ({
 
                                 <div className="pt-6 w-full">
                                     <InputOTP
+                                        type="number"
                                         value={value}
                                         onChange={setValue}
                                         maxLength={8}

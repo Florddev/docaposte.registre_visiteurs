@@ -117,7 +117,7 @@ const PersonalData = ({
                                                 Conserver mes données personnelles
                                             </Label>
                                             <p className="text-sm text-muted-foreground">
-                                                J'accepte que mes informations soient conservées au-delà de la durée standard d'un mois pour faciliter mes prochaines visites.
+                                                J'accepte que mes informations soient conservées au-delà d'un mois pour faciliter mes prochaines visites.
                                             </p>
                                         </div>
                                         <Switch

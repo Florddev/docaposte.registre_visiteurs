@@ -66,4 +66,7 @@
   body {
     @apply bg-background text-foreground;
   }
+  .required {
+      @apply flex gap-0.5 after:content-['*'] after:block after:text-red-400
+  }
 }

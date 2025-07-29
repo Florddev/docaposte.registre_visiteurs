@@ -7,6 +7,7 @@ use App\Models\Visit;
 use App\Models\Visitor;
 use App\Models\Purpose;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -132,8 +133,8 @@ class VisitController extends Controller
                 'phone' => $request->visitor['phone'],
             ],
             [
-                'lastname' => $request->visitor['lastname'],
-                'firstname' => $request->visitor['firstname'],
+                'lastname' => Str::upper($request->visitor['lastname']),
+                'firstname' => Str::upper($request->visitor['firstname']),
                 'employee_number' => $request->visitor['employee_number'] ?? null,
                 'data_understanding' => $request->visitor['data_understanding'] ?? false,
                 'data_retention' => $request->visitor['data_retention'] ?? false,

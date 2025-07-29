@@ -27,7 +27,7 @@ const Identity = ({
     };
 
     const handleNext = () => {
-        if (data.lastName && data.firstName && data.phone && data.email) {
+        if (data.lastName && data.firstName) {
             nextStep(data);
         }
     };
@@ -75,7 +75,9 @@ const Identity = ({
 
                                 <div className="pt-6 flex w-full gap-4">
                                     <div className="w-full flex flex-col space-y-1.5">
-                                        <Label htmlFor="lastName">Nom</Label>
+                                        <Label htmlFor="lastName" className="required">
+                                            Nom
+                                        </Label>
                                         <Input
                                             value={data.lastName}
                                             onChange={handleChange('lastName')}
@@ -84,7 +86,9 @@ const Identity = ({
                                         />
                                     </div>
                                     <div className="w-full flex flex-col space-y-1.5">
-                                        <Label htmlFor="firstName">Prénom</Label>
+                                        <Label htmlFor="firstName" className="required">
+                                            Prénom
+                                        </Label>
                                         <Input
                                             value={data.firstName}
                                             onChange={handleChange('firstName')}
@@ -127,7 +131,7 @@ const Identity = ({
                 <Button
                     variant="default"
                     onClick={handleNext}
-                    disabled={!data.lastName || !data.firstName || !data.phone || !data.email}
+                    disabled={!data.lastName || !data.firstName}
                 >
                     Suivant <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
