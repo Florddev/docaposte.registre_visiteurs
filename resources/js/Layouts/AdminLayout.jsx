@@ -1,5 +1,5 @@
-import React from 'react';
-import {Head, usePage} from "@inertiajs/react";
+import React, { useEffect } from 'react';
+import {Head, usePage, router} from "@inertiajs/react";
 import { Link } from '@inertiajs/react'
 import {
     Bell,
@@ -9,6 +9,7 @@ import {
     Menu,
     Package,
     Search,
+    Settings,
     ShoppingCart,
     Users,
     Tag
@@ -52,6 +53,13 @@ function LinkComponent({ text = '', Icon = null, ...props}) {
 const MainLayout = ({ title, subtitle, children, sectionName, SectionIcon, ...props }) => {
     const auth = usePage().props.auth;
 
+    useEffect(() => {
+        // Si l'utilisateur n'est pas authentifié, le rediriger vers l'accueil
+        if (!auth?.user) {
+            router.visit(route('home'));
+        }
+    }, [auth]);
+
     return (
         <>
             <Head>
@@ -78,6 +86,7 @@ const MainLayout = ({ title, subtitle, children, sectionName, SectionIcon, ...pr
                                 <LinkComponent href={route('admin.purposes.index')} text="Motifs de visite" Icon={Tag} />
                                 <LinkComponent href={route('admin.users.index')} text="Utilisateurs" Icon={Users} />
                                 <LinkComponent href={"#"} text="Statistiques" Icon={LineChart} />
+                                <LinkComponent href={route('admin.settings.index')} text="Paramètres" Icon={Settings} />
                             </nav>
                         </div>
                     </div>
@@ -102,6 +111,7 @@ const MainLayout = ({ title, subtitle, children, sectionName, SectionIcon, ...pr
                                     <LinkComponent href={route('admin.purposes.index')} text="Motifs de visite" Icon={Tag} />
                                     <LinkComponent href={route('admin.users.index')} text="Utilisateurs" Icon={Users} />
                                     <LinkComponent href={"#"} text="Statistiques" Icon={LineChart} />
+                                    <LinkComponent href={route('admin.settings.index')} text="Paramètres" Icon={Settings} />
                                 </nav>
                             </SheetContent>
                         </Sheet>

@@ -9,15 +9,9 @@ use App\Models\Purpose;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-use Spatie\RouteAttributes\Attributes\Get;
-use Spatie\RouteAttributes\Attributes\Middleware;
-use Spatie\RouteAttributes\Attributes\Prefix;
 
-#[Middleware('auth')]
-#[Prefix('dashboard')]
 class MainController extends Controller
 {
-    #[Get('home', 'admin.home')]
     public function home()
     {
         // Date references

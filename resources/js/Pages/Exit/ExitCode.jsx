@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, Lock } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Lock, AlertTriangle } from 'lucide-react';
 import { Button } from "@/Components/ui/button";
 import { Link, router, usePage } from "@inertiajs/react";
 import { Card, CardContent } from "@/Components/ui/card";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/Components/ui/input-otp";
 import { Alert, AlertDescription } from "@/Components/ui/alert";
+import EmergencyExitModal from "@/Components/EmergencyExitModal";
 
 const ExitCode = ({
   nextStep,
@@ -16,6 +17,7 @@ const ExitCode = ({
 }) => {
     const { errors } = usePage().props;
     const [value, setValue] = useState(formData.exitCode || '');
+    const [showEmergencyModal, setShowEmergencyModal] = useState(false);
 
     const handleComplete = (value) => {
         if (value.length === 8) {
@@ -68,6 +70,23 @@ const ExitCode = ({
                                             </AlertDescription>
                                         </Alert>
                                     )}
+
+                                    {/* Bouton d'accès d'urgence */}
+                                    <div className="mt-6 pt-4 border-t">
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => setShowEmergencyModal(true)}
+                                            className="w-full text-orange-600 border-orange-200 hover:bg-orange-50"
+                                        >
+                                            <AlertTriangle className="mr-2 h-4 w-4" />
+                                            Identifiant de sortie oublié
+                                        </Button>
+                                        {/*<p className="text-xs text-muted-foreground mt-2 text-center">*/}
+                                        {/*    Accès administrateur pour forcer la sortie*/}
+                                        {/*</p>*/}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -89,6 +108,12 @@ const ExitCode = ({
                     Suivant <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
             </div>
+
+            {/* Modal d'urgence */}
+            <EmergencyExitModal
+                isOpen={showEmergencyModal}
+                onClose={() => setShowEmergencyModal(false)}
+            />
         </>
     );
 };

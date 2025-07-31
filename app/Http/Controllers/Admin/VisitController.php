@@ -11,22 +11,12 @@ use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
-use Spatie\RouteAttributes\Attributes\Get;
-use Spatie\RouteAttributes\Attributes\Post;
-use Spatie\RouteAttributes\Attributes\Put;
-use Spatie\RouteAttributes\Attributes\Delete;
-use Spatie\RouteAttributes\Attributes\Middleware;
-use Spatie\RouteAttributes\Attributes\Prefix;
-use Spatie\RouteAttributes\Attributes\Where;
 
-#[Middleware('auth')]
-#[Prefix('dashboard')]
 class VisitController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    #[Get('visits', 'admin.visits.index')]
     public function index(Request $request)
     {
         $query = Visit::query()
@@ -93,7 +83,6 @@ class VisitController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    #[Get('visits/create', 'admin.visits.create')]
     public function create()
     {
         $purposes = Purpose::all();
@@ -105,7 +94,6 @@ class VisitController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    #[Post('visits', 'admin.visits.store')]
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -156,8 +144,6 @@ class VisitController extends Controller
     /**
      * Display the specified resource.
      */
-    #[Get('visits/{visit}', 'admin.visits.show')]
-    #[Where('visit', '[0-9]+')]
     public function show(Visit $visit)
     {
         $visit->load(['visitor']);
@@ -182,8 +168,6 @@ class VisitController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    #[Get('visits/{visit}/edit', 'admin.visits.edit')]
-    #[Where('visit', '[0-9]+')]
     public function edit(Visit $visit)
     {
         $visit->load(['visitor']);
@@ -214,8 +198,6 @@ class VisitController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    #[Put('visits/{visit}', 'admin.visits.update')]
-    #[Where('visit', '[0-9]+')]
     public function update(Request $request, Visit $visit)
     {
         $validator = Validator::make($request->all(), [
@@ -267,8 +249,6 @@ class VisitController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    #[Delete('visits/{visit}', 'admin.visits.destroy')]
-    #[Where('visit', '[0-9]+')]
     public function destroy(Visit $visit)
     {
         $visit->delete();
@@ -278,8 +258,6 @@ class VisitController extends Controller
     /**
      * Show the form for checking out a visitor.
      */
-    #[Get('visits/{visit}/checkout', 'admin.visits.checkout')]
-    #[Where('visit', '[0-9]+')]
     public function checkoutForm(Visit $visit)
     {
         $visit->load(['visitor']);
@@ -303,8 +281,6 @@ class VisitController extends Controller
     /**
      * Checkout visitor (record exit time).
      */
-    #[Post('visits/{visit}/checkout', 'admin.visits.checkout.store')]
-    #[Where('visit', '[0-9]+')]
     public function checkout(Visit $visit, Request $request)
     {
         $validator = Validator::make($request->all(), [

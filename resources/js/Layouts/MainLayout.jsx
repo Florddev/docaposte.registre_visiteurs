@@ -1,7 +1,16 @@
-import React from 'react';
-import {Head} from "@inertiajs/react";
+import React, { useEffect } from 'react';
+import {Head, usePage, router} from "@inertiajs/react";
 
 const MainLayout = ({ title, subtitle, children, sectionName, SectionIcon }) => {
+    const { auth } = usePage().props;
+
+    useEffect(() => {
+        // Si l'utilisateur est authentifié, le rediriger vers le dashboard
+        if (auth?.user) {
+            router.visit(route('admin.home'));
+        }
+    }, [auth]);
+
     return (
         <>
             <Head>

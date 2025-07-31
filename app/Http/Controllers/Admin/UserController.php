@@ -9,22 +9,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
-use Spatie\RouteAttributes\Attributes\Get;
-use Spatie\RouteAttributes\Attributes\Post;
-use Spatie\RouteAttributes\Attributes\Put;
-use Spatie\RouteAttributes\Attributes\Delete;
-use Spatie\RouteAttributes\Attributes\Middleware;
-use Spatie\RouteAttributes\Attributes\Prefix;
-use Spatie\RouteAttributes\Attributes\Where;
 
-#[Middleware('auth')]
-#[Prefix('dashboard')]
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    #[Get('users', 'admin.users.index')]
     public function index(Request $request)
     {
         $query = User::query();
@@ -52,7 +42,6 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    #[Get('users/create', 'admin.users.create')]
     public function create()
     {
         return Inertia::render('Admin/User/UserCreate');
@@ -61,7 +50,6 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    #[Post('users', 'admin.users.store')]
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -87,8 +75,6 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    #[Get('users/{user}', 'admin.users.show')]
-    #[Where('user', '[0-9]+')]
     public function show(User $user)
     {
         return Inertia::render('Admin/User/UserShow', [
@@ -99,8 +85,6 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    #[Get('users/{user}/edit', 'admin.users.edit')]
-    #[Where('user', '[0-9]+')]
     public function edit(User $user)
     {
         return Inertia::render('Admin/User/UserEdit', [
@@ -111,8 +95,6 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    #[Put('users/{user}', 'admin.users.update')]
-    #[Where('user', '[0-9]+')]
     public function update(Request $request, User $user)
     {
         $rules = [
@@ -150,8 +132,6 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    #[Delete('users/{user}', 'admin.users.destroy')]
-    #[Where('user', '[0-9]+')]
     public function destroy(Request $request, User $user)
     {
         // Empêcher la suppression de son propre compte

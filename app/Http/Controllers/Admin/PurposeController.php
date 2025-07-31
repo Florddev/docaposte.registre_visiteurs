@@ -7,22 +7,12 @@ use App\Models\Purpose;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
-use Spatie\RouteAttributes\Attributes\Get;
-use Spatie\RouteAttributes\Attributes\Post;
-use Spatie\RouteAttributes\Attributes\Put;
-use Spatie\RouteAttributes\Attributes\Delete;
-use Spatie\RouteAttributes\Attributes\Middleware;
-use Spatie\RouteAttributes\Attributes\Prefix;
-use Spatie\RouteAttributes\Attributes\Where;
 
-#[Middleware('auth')]
-#[Prefix('dashboard')]
 class PurposeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    #[Get('purposes', 'admin.purposes.index')]
     public function index(Request $request)
     {
         $query = Purpose::query();
@@ -46,7 +36,6 @@ class PurposeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    #[Get('purposes/create', 'admin.purposes.create')]
     public function create()
     {
         return Inertia::render('Admin/Purpose/PurposeCreate');
@@ -55,7 +44,6 @@ class PurposeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    #[Post('purposes', 'admin.purposes.store')]
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -77,8 +65,6 @@ class PurposeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    #[Get('purposes/{purpose}/edit', 'admin.purposes.edit')]
-    #[Where('purpose', '[0-9]+')]
     public function edit(Purpose $purpose)
     {
         return Inertia::render('Admin/Purpose/PurposeEdit', [
@@ -89,8 +75,6 @@ class PurposeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    #[Put('purposes/{purpose}', 'admin.purposes.update')]
-    #[Where('purpose', '[0-9]+')]
     public function update(Request $request, Purpose $purpose)
     {
         $validator = Validator::make($request->all(), [
@@ -112,8 +96,6 @@ class PurposeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    #[Delete('purposes/{purpose}', 'admin.purposes.destroy')]
-    #[Where('purpose', '[0-9]+')]
     public function destroy(Purpose $purpose)
     {
         // Vérifier si le motif est utilisé par une visite
