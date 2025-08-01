@@ -21,46 +21,114 @@ class MainController extends Controller
         $lastMonth = Carbon::now()->subMonth()->startOfMonth();
         $weekAgo = Carbon::now()->subDays(7);
 
-        // Total visits
-        $totalVisits = Visit::count();
-        $totalVisitsLastMonth = Visit::where('created_at', '<', $currentMonth)->where('created_at', '>=', $lastMonth)->count();
+        // Total company visits (grouped by company and date)
+        $totalVisits = Visit::select(DB::raw('DATE(date_entree) as visit_date'), 'company')
+            ->whereNotNull('date_entree')
+            ->whereNotNull('company')
+            ->where('company', '!=', '')
+            ->groupBy('visit_date', 'company')
+            ->get()
+            ->count();
+
+        $totalVisitsLastMonth = Visit::select(DB::raw('DATE(date_entree) as visit_date'), 'company')
+            ->whereNotNull('date_entree')
+            ->whereNotNull('company')
+            ->where('company', '!=', '')
+            ->where('created_at', '<', $currentMonth)
+            ->where('created_at', '>=', $lastMonth)
+            ->groupBy('visit_date', 'company')
+            ->get()
+            ->count();
+
         $visitsTrend = $totalVisitsLastMonth > 0
             ? round(($totalVisits - $totalVisitsLastMonth) / $totalVisitsLastMonth * 100)
             : 100;
 
-        // Active visits
-        $activeVisits = Visit::whereNotNull('date_entree')
+        // Active company visits (companies currently visiting)
+        $activeVisits = Visit::select('company')
+            ->whereNotNull('date_entree')
             ->whereNull('date_sortie')
+            ->whereNotNull('company')
+            ->where('company', '!=', '')
+            ->whereDate('date_entree', $today)
+            ->groupBy('company')
+            ->get()
             ->count();
 
-        // Today's visits
-        $todayVisits = Visit::whereDate('date_entree', $today)->count();
-        $yesterdayVisits = Visit::whereDate('date_entree', $yesterday)->count();
+        // Today's company visits
+        $todayVisits = Visit::select('company')
+            ->whereDate('date_entree', $today)
+            ->whereNotNull('company')
+            ->where('company', '!=', '')
+            ->groupBy('company')
+            ->get()
+            ->count();
+
+        $yesterdayVisits = Visit::select('company')
+            ->whereDate('date_entree', $yesterday)
+            ->whereNotNull('company')
+            ->where('company', '!=', '')
+            ->groupBy('company')
+            ->get()
+            ->count();
         $todayTrend = $yesterdayVisits > 0 ? ($todayVisits >= $yesterdayVisits ? 'up' : 'down') : 'up';
         $todayTrendValue = $yesterdayVisits > 0
             ? round(abs($todayVisits - $yesterdayVisits) / $yesterdayVisits * 100)
             : 100;
 
-        // Planned visits (future dates)
-        $plannedVisits = Visit::where('date_entree', '>', Carbon::now())->count();
+        // Planned company visits (future dates)
+        $plannedVisits = Visit::select('company', DB::raw('DATE(date_entree) as visit_date'))
+            ->where('date_entree', '>', Carbon::now())
+            ->whereNotNull('company')
+            ->where('company', '!=', '')
+            ->groupBy('company', 'visit_date')
+            ->get()
+            ->count();
 
-        // Unique visitors
-        $uniqueVisitors = Visitor::count();
-        $uniqueVisitorsLastMonth = Visitor::where('created_at', '<', $currentMonth)->where('created_at', '>=', $lastMonth)->count();
+        // Unique companies
+        $uniqueVisitors = Visit::select('company')
+            ->whereNotNull('company')
+            ->where('company', '!=', '')
+            ->groupBy('company')
+            ->get()
+            ->count();
+
+        $uniqueVisitorsLastMonth = Visit::select('company')
+            ->where('created_at', '<', $currentMonth)
+            ->where('created_at', '>=', $lastMonth)
+            ->whereNotNull('company')
+            ->where('company', '!=', '')
+            ->groupBy('company')
+            ->get()
+            ->count();
         $visitorsTrend = $uniqueVisitorsLastMonth > 0
             ? round(($uniqueVisitors - $uniqueVisitorsLastMonth) / $uniqueVisitorsLastMonth * 100)
             : 100;
 
-        // Recurring visitors (have more than one visit)
+        // Recurring companies (companies that have visited more than once)
         $recurringVisitorsCount = DB::table('visits')
-            ->select('visitor_id', DB::raw('COUNT(*) as visit_count'))
-            ->whereNotNull('visitor_id')
-            ->groupBy('visitor_id')
-            ->having('visit_count', '>', 1)
+            ->select('company', DB::raw('COUNT(DISTINCT DATE(date_entree)) as visit_days'))
+            ->whereNotNull('company')
+            ->where('company', '!=', '')
+            ->whereNotNull('date_entree')
+            ->groupBy('company')
+            ->having('visit_days', '>', 1)
+            ->get()
             ->count();
 
         $returningVisitorsPercentage = $uniqueVisitors > 0
             ? round($recurringVisitorsCount / $uniqueVisitors * 100)
+            : 0;
+
+        // Total individual visitors per company visits
+        $totalIndividualVisitors = Visit::whereNotNull('company')
+            ->where('company', '!=', '')
+            ->whereNotNull('date_entree')
+            ->count();
+
+        // Average visitors per company visit
+        $avgVisitorsPerCompanyVisit = $totalVisits > 0
+            ? round($totalIndividualVisitors / $totalVisits, 1)
             : 0;
 
         // Average visit duration
@@ -144,14 +212,22 @@ class MainController extends Controller
                 return $item;
             });
 
-        // Daily visits data (last 7 days)
+        // Daily company visits data (last 7 days)
         $dailyVisitsData = collect(range(0, 6))
             ->map(function ($daysAgo) {
                 $date = Carbon::now()->subDays($daysAgo);
 
+                $companyVisits = Visit::select('company')
+                    ->whereDate('date_entree', $date->toDateString())
+                    ->whereNotNull('company')
+                    ->where('company', '!=', '')
+                    ->groupBy('company')
+                    ->get()
+                    ->count();
+
                 return [
                     'name' => $date->format('d/m'),
-                    'value' => Visit::whereDate('date_entree', $date->toDateString())->count()
+                    'value' => $companyVisits
                 ];
             })
             ->reverse()
@@ -175,12 +251,19 @@ class MainController extends Controller
         ];
 
         $timeData = collect($timeRanges)->map(function ($range, $label) {
+            $companyVisits = Visit::select('company', DB::raw('DATE(date_entree) as visit_date'))
+                ->whereNotNull('date_entree')
+                ->whereNotNull('company')
+                ->where('company', '!=', '')
+                ->whereRaw('HOUR(date_entree) >= ?', [$range[0]])
+                ->whereRaw('HOUR(date_entree) < ?', [$range[1]])
+                ->groupBy('company', 'visit_date')
+                ->get()
+                ->count();
+
             return [
                 'name' => $label,
-                'value' => Visit::whereNotNull('date_entree')
-                    ->whereRaw('HOUR(date_entree) >= ?', [$range[0]])
-                    ->whereRaw('HOUR(date_entree) < ?', [$range[1]])
-                    ->count()
+                'value' => $companyVisits
             ];
         })->values();
 
@@ -242,6 +325,8 @@ class MainController extends Controller
             'uniqueVisitors' => $uniqueVisitors,
             'visitorsTrend' => $visitorsTrend,
             'returningVisitorsPercentage' => $returningVisitorsPercentage,
+            'totalIndividualVisitors' => $totalIndividualVisitors,
+            'avgVisitorsPerCompanyVisit' => $avgVisitorsPerCompanyVisit,
             'averageDuration' => $formattedAverageDuration,
             'completionRate' => $completionRate,
             'completionRateTrend' => 5, // Mock value, would need historical data to calculate

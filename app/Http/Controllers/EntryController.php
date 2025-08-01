@@ -6,6 +6,7 @@ use App\Models\Purpose;
 use App\Models\Visit;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class EntryController
@@ -54,12 +55,13 @@ class EntryController
                 ['employee_number' => $request->matricule],
                 $model
             );
+            $request->company = 'Docaposte';
         }
 
         $visite = Visit::create([
             'visitor_id' => $visiteur->id,
             'motif_id' => $request->motifId,
-            'company' => $request->company,
+            'company' => Str::ucfirst(Str::lower($request->company)),
             'visit_recipient' => $request->personToMeet,
             'identifiant_sortie' => $request->identifiant ?? null,
             'date_entree' => now(),

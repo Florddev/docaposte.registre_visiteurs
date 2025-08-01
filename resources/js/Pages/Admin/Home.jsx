@@ -1,6 +1,6 @@
 import AdminLayout from "@/Layouts/AdminLayout";
 import React, { useState } from "react";
-import { ArrowUpIcon, ArrowDownIcon, BarChart3, PieChart, Clock, UserRound, Calendar, ClipboardCheck } from "lucide-react";
+import { ArrowUpIcon, ArrowDownIcon, BarChart3, PieChart, Clock, UserRound, Calendar, ClipboardCheck, Users } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
@@ -40,22 +40,28 @@ const StatCard = ({ title, value, description, icon: Icon, trend, trendValue }) 
 // Dashboard Overview Component
 const VisitsOverview = ({ stats }) => {
     return (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             <StatCard
-                title="Visites totales"
+                title="Visites d'entreprises"
                 value={stats.totalVisits}
-                description={`${stats.activeVisits} visites en cours`}
+                description={`${stats.activeVisits} entreprises actuellement en visite`}
                 icon={ClipboardCheck}
                 trend="up"
                 trendValue={`${stats.visitsTrend}% depuis le mois dernier`}
             />
             <StatCard
-                title="Visiteurs uniques"
+                title="Entreprises uniques"
                 value={stats.uniqueVisitors}
-                description={`${stats.returningVisitorsPercentage}% de visiteurs récurrents`}
+                description={`${stats.returningVisitorsPercentage}% d'entreprises récurrentes`}
                 icon={UserRound}
                 trend="up"
                 trendValue={`${stats.visitorsTrend}% depuis le mois dernier`}
+            />
+            <StatCard
+                title="Visiteurs individuels"
+                value={stats.totalIndividualVisitors}
+                description={`Moyenne: ${stats.avgVisitorsPerCompanyVisit} visiteurs/visite`}
+                icon={Users}
             />
             <StatCard
                 title="Durée moyenne"
@@ -66,7 +72,7 @@ const VisitsOverview = ({ stats }) => {
             <StatCard
                 title="Aujourd'hui"
                 value={stats.todayVisits}
-                description={`${stats.plannedVisits} visites planifiées`}
+                description={`${stats.plannedVisits} visites d'entreprises planifiées`}
                 icon={Calendar}
                 trend={stats.todayTrend === 'up' ? 'up' : 'down'}
                 trendValue={`${Math.abs(stats.todayTrendValue)}% par rapport à hier`}
@@ -179,8 +185,8 @@ const VisitsByDayChart = ({ dailyVisitsData }) => {
     return (
         <Card className="col-span-1 md:col-span-2">
             <CardHeader>
-                <CardTitle>Visites par jour</CardTitle>
-                <CardDescription>Évolution du nombre de visites sur les 7 derniers jours</CardDescription>
+                <CardTitle>Visites d'entreprises par jour</CardTitle>
+                <CardDescription>Évolution du nombre de visites d'entreprises sur les 7 derniers jours</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="h-80">
@@ -259,8 +265,8 @@ const VisitsByTimeChart = ({ timeData }) => {
     return (
         <Card className="col-span-1">
             <CardHeader>
-                <CardTitle>Visites par horaire</CardTitle>
-                <CardDescription>Répartition des visites par tranche horaire</CardDescription>
+                <CardTitle>Visites d'entreprises par horaire</CardTitle>
+                <CardDescription>Répartition des visites d'entreprises par tranche horaire</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="h-80">
@@ -273,7 +279,7 @@ const VisitsByTimeChart = ({ timeData }) => {
                             <XAxis dataKey="name" />
                             <YAxis />
                             <Tooltip />
-                            <Bar dataKey="value" fill="#6366F1" name="Visites" />
+                            <Bar dataKey="value" fill="#6366F1" name="Visites d'entreprises" />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
